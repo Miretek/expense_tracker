@@ -1,3 +1,4 @@
+import 'package:expense_tracker/screens/add_expense_screen.dart';
 import 'package:expense_tracker/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       home: const HomeScreen(),
       routes: {
         HomeScreen.routeName: (ctx) => const HomeScreen(),
+        AddExpenseScreen.routeName: (ctx) => const AddExpenseScreen(),
       },
     );
   }
