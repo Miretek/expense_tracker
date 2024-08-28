@@ -1,4 +1,8 @@
+import 'package:expense_tracker/enums/currency.dart';
+import 'package:expense_tracker/providers/expenses.dart';
+import 'package:expense_tracker/providers/rates.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DropDown extends StatefulWidget {
   final String text;
@@ -17,6 +21,14 @@ class _DropDownState extends State<DropDown> {
   }
 
   void onChangeHandler(String? value) async {
+    Provider.of<Expenses>(context, listen: false).setCurrency(value == "ETB"
+        ? Currency.ETB
+        : value == "USD"
+            ? Currency.USD
+            : Currency.EUR);
+    if (value != null) {
+      Provider.of<Rates>(context, listen: false).changeSelectedCurrency(value);
+    }
     setState(() {
       _isSelected = true;
       _selectedDrop = value.toString();

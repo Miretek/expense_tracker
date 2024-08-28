@@ -1,5 +1,5 @@
-import 'package:expense_tracker/models/expense_model.dart';
-import 'package:expense_tracker/providers/expenses.dart';
+import 'package:expense_tracker/models/income_model.dart';
+import 'package:expense_tracker/providers/incomes.dart';
 import 'package:expense_tracker/screens/pick_category_screen.dart';
 import 'package:expense_tracker/widgets/drop_down.dart';
 import 'package:flutter/material.dart';
@@ -7,22 +7,22 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class AddExpenseScreen extends StatefulWidget {
-  static const routeName = "add-expense";
-  const AddExpenseScreen({super.key});
+class AddIncomeScreen extends StatefulWidget {
+  static const routeName = "add-income";
+  const AddIncomeScreen({super.key});
 
   @override
-  State<AddExpenseScreen> createState() => _AddExpenseScreenState();
+  State<AddIncomeScreen> createState() => _AddIncomeScreenState();
 }
 
-class _AddExpenseScreenState extends State<AddExpenseScreen> {
+class _AddIncomeScreenState extends State<AddIncomeScreen> {
   final currencyList = ["ETB"];
   DateTime? _pickedDate;
   final _currentDate = DateTime.now();
   DateFormat format = DateFormat.yMMMd();
   Map<String, dynamic> _temp = {};
   final GlobalKey<FormState> _formKey = GlobalKey();
-  ExpenseModel? expense;
+  IncomeModel? income;
   void _addHandler(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -30,15 +30,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
     _formKey.currentState!.save();
 
-    bool added = await Provider.of<Expenses>(context, listen: false).addExpense(
-      ExpenseModel(
-        category:
-            Provider.of<Expenses>(context, listen: false).expenseCategory!,
-        amount: _temp["amount"],
-        currency: Provider.of<Expenses>(context, listen: false).currency,
-        dateTime: _pickedDate != null ? _pickedDate! : DateTime.now(),
-      ),
-    );
+    bool added = await Provider.of<Incomes>(context, listen: false)
+        .addIncome(IncomeModel(
+      category: Provider.of<Incomes>(context, listen: false).incomeCategory!,
+      amount: _temp["amount"],
+      currency: Provider.of<Incomes>(context, listen: false).currency,
+      dateTime: _pickedDate != null ? _pickedDate! : DateTime.now(),
+    ));
     if (added) {
       Navigator.of(context).pop();
     }
@@ -49,10 +47,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue[900],
           foregroundColor: Colors.white,
+          backgroundColor: Colors.blue[900],
           title: const Text(
-            'Add Expense',
+            'Add Income',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,
@@ -137,8 +135,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               Container(
                 // width: deviceSize.width,
                 child: InkWell(
-                  onTap: () => Navigator.of(context)
-                      .pushNamed(PickCategoryScreen.routeName),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PickCategoryScreen(mode: "income")),
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -150,16 +152,16 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         ),
                         child: Center(
                           child: Text(
-                              Provider.of<Expenses>(context).expenseCategory ==
+                              Provider.of<Incomes>(context).incomeCategory ==
                                       null
                                   ? "Choose Category"
-                                  : Provider.of<Expenses>(context)
-                                      .expenseCategory!
+                                  : Provider.of<Incomes>(context)
+                                      .incomeCategory!
                                       .name),
                         ),
                       ),
                       Container(
-                        child: Provider.of<Expenses>(context).expenseCategory ==
+                        child: Provider.of<Incomes>(context).incomeCategory ==
                                 null
                             ? Icon(
                                 Icons.emoji_transportation_rounded,
@@ -167,9 +169,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             : Container(
                                 height: 20,
                                 width: 20,
-                                child: Image.asset(
-                                    Provider.of<Expenses>(context)
-                                        .selectedExpenseIcon),
+                                child: Image.asset(Provider.of<Incomes>(context)
+                                    .selectedIncomeIcon),
                               ),
                       ),
                     ],
