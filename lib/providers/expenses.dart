@@ -48,7 +48,7 @@ class Expenses with ChangeNotifier {
 
   Future<bool> addExpense(ExpenseModel expense) async {
     await HiveDb.expenseBox!.add(expense);
-    _expensesList = HiveDb.expenseBox!.values as List<ExpenseModel>;
+    // _expensesList = HiveDb.expenseBox!.values as List<ExpenseModel>;
     setTotal();
     calculateCategoryExpenses();
     notifyListeners();

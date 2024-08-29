@@ -10,8 +10,10 @@ class ExpensesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Center(child: Text("in ETB")),
+        const Center(child: Text("in ETB")),
         PieChart(
+          swapAnimationCurve: Curves.easeIn,
+          swapAnimationDuration: const Duration(milliseconds: 800),
           PieChartData(
             sections: [
               PieChartSectionData(
@@ -20,7 +22,8 @@ class ExpensesView extends StatelessWidget {
               ),
               PieChartSectionData(
                   value:
-                      Provider.of<Expenses>(context).totalEntertainmentExpense),
+                      Provider.of<Expenses>(context).totalEntertainmentExpense,
+                  color: Colors.deepOrange),
               PieChartSectionData(
                 value: Provider.of<Expenses>(context).totalGasExpense,
                 color: Colors.green,

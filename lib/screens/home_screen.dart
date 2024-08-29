@@ -104,53 +104,156 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: const AppDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(height: 200, child: const ExpensesView()),
-            Provider.of<Rates>(context, listen: false).selectedCurrency == "ETB"
-                ? Text(
-                    "Balance: ${(Provider.of<Incomes>(context).totalIncome - Provider.of<Expenses>(context).totalExpense).toStringAsFixed(2)} ETB")
-                : Provider.of<Rates>(context, listen: false).selectedCurrency ==
-                        "USD"
-                    ? Text(
-                        "Balance: ${((Provider.of<Incomes>(context).totalIncome - Provider.of<Expenses>(context).totalExpense) * Provider.of<Rates>(context, listen: false).getUSDRate()).toStringAsFixed(2)} USD")
-                    : Text(
-                        "Balance: ${((Provider.of<Incomes>(context).totalIncome - Provider.of<Expenses>(context).totalExpense) * Provider.of<Rates>(context, listen: false).getEURRate()).toStringAsFixed(2)} EUR"),
-            Provider.of<Rates>(context, listen: false).selectedCurrency == "ETB"
-                ? Text(
-                    "Total Income: ${Provider.of<Incomes>(context).totalIncome} ETB")
-                : Provider.of<Rates>(context, listen: false).selectedCurrency ==
-                        "USD"
-                    ? Text(
-                        "Total Income: ${(Provider.of<Incomes>(context).totalIncome * Provider.of<Rates>(context, listen: false).getUSDRate()).toStringAsFixed(2)} USD")
-                    : Text(
-                        "Total Income: ${(Provider.of<Incomes>(context).totalIncome * Provider.of<Rates>(context, listen: false).getEURRate()).toStringAsFixed(2)} EUR"),
-            Provider.of<Rates>(context, listen: false).selectedCurrency == "ETB"
-                ? Text(
-                    "Total Expense: ${(Provider.of<Expenses>(context).totalExpense).toStringAsFixed(2)} ETB")
-                : Provider.of<Rates>(context, listen: false).selectedCurrency ==
-                        "USD"
-                    ? Text(
-                        "Total Expense: ${(Provider.of<Expenses>(context).totalExpense * Provider.of<Rates>(context, listen: false).getUSDRate()).toStringAsFixed(2)} USD")
-                    : Text(
-                        "Total Expense: ${(Provider.of<Expenses>(context).totalExpense * Provider.of<Rates>(context, listen: false).getEURRate()).toStringAsFixed(2)} EUR"),
-            const SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildAddExpenseButton(),
-                  _buildAddIncomeButton(),
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height -
+              AppBar().preferredSize.height,
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Provider.of<Rates>(context, listen: false).selectedCurrency ==
+                      "ETB"
+                  ? Text(
+                      "Balance: ${(Provider.of<Incomes>(context).totalIncome - Provider.of<Expenses>(context).totalExpense).toStringAsFixed(2)} ETB")
+                  : Provider.of<Rates>(context, listen: false)
+                              .selectedCurrency ==
+                          "USD"
+                      ? Text(
+                          "Balance: ${((Provider.of<Incomes>(context).totalIncome - Provider.of<Expenses>(context).totalExpense) * Provider.of<Rates>(context, listen: false).getUSDRate()).toStringAsFixed(2)} USD")
+                      : Text(
+                          "Balance: ${((Provider.of<Incomes>(context).totalIncome - Provider.of<Expenses>(context).totalExpense) * Provider.of<Rates>(context, listen: false).getEURRate()).toStringAsFixed(2)} EUR"),
+              Provider.of<Rates>(context, listen: false).selectedCurrency ==
+                      "ETB"
+                  ? Text(
+                      "Total Income: ${Provider.of<Incomes>(context).totalIncome} ETB")
+                  : Provider.of<Rates>(context, listen: false)
+                              .selectedCurrency ==
+                          "USD"
+                      ? Text(
+                          "Total Income: ${(Provider.of<Incomes>(context).totalIncome * Provider.of<Rates>(context, listen: false).getUSDRate()).toStringAsFixed(2)} USD")
+                      : Text(
+                          "Total Income: ${(Provider.of<Incomes>(context).totalIncome * Provider.of<Rates>(context, listen: false).getEURRate()).toStringAsFixed(2)} EUR"),
+              Provider.of<Rates>(context, listen: false).selectedCurrency ==
+                      "ETB"
+                  ? Text(
+                      "Total Expense: ${(Provider.of<Expenses>(context).totalExpense).toStringAsFixed(2)} ETB")
+                  : Provider.of<Rates>(context, listen: false)
+                              .selectedCurrency ==
+                          "USD"
+                      ? Text(
+                          "Total Expense: ${(Provider.of<Expenses>(context).totalExpense * Provider.of<Rates>(context, listen: false).getUSDRate()).toStringAsFixed(2)} USD")
+                      : Text(
+                          "Total Expense: ${(Provider.of<Expenses>(context).totalExpense * Provider.of<Rates>(context, listen: false).getEURRate()).toStringAsFixed(2)} EUR"),
+              const SizedBox(
+                height: 20,
               ),
-            )
-          ],
+              if (Provider.of<Expenses>(context).totalExpense != 0.0)
+                Container(height: 200, child: const ExpensesView()),
+              const SizedBox(
+                height: 20,
+              ),
+              if (Provider.of<Expenses>(context).totalExpense != 0.0)
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: 10,
+                          height: 10,
+                          color: Colors.blue,
+                        ),
+                        const Text("Food")
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: 10,
+                          height: 10,
+                          color: Colors.green,
+                        ),
+                        const Text("Gas")
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: 10,
+                          height: 10,
+                          color: Colors.deepOrange,
+                        ),
+                        const Text("Entertainment")
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: 10,
+                          height: 10,
+                          color: Colors.yellow,
+                        ),
+                        const Text("Rent")
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: 10,
+                          height: 10,
+                          color: Colors.pink,
+                        ),
+                        const Text("Clothes")
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: 10,
+                          height: 10,
+                          color: Colors.brown,
+                        ),
+                        const Text("Taxi")
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: 10,
+                          height: 10,
+                          color: Colors.red,
+                        ),
+                        const Text("Other")
+                      ],
+                    ),
+                  ],
+                ),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildAddExpenseButton(),
+                    _buildAddIncomeButton(),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
